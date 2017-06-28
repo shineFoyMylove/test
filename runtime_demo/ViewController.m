@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import <objc/message.h>
+#import "Person.h"
 
 @interface ViewController ()
 
@@ -16,7 +18,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 调用一个没有声明，也可能没有实现的方法
+    Person *per = [[Person alloc] init];
+        //method 1
+//    [per performSelector:@selector(varietyNameOfSEL) withObject:nil];
+    
+        /** 
+         *method 2
+         *Xcode5开始，不建议使用 obj_msgSend() 消息机制
+         */
+//    objc_msgSend(per,@selector(varietyNameOfSEL));
+    
+    SEL sel = sel_getUid("varietyNameOfSEL1");
+    BOOL haveSel = class_respondsToSelector(self, sel);
+    objc_msgSend(per, sel);
+    
+    
+    
 }
 
 
